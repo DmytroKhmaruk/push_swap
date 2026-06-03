@@ -6,7 +6,7 @@
 #    By: dkhmaruk <dkhmaruk@student.42vienna.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/26 13:44:25 by dkhmaruk          #+#    #+#              #
-#    Updated: 2026/06/02 18:17:03 by dkhmaruk         ###   ########.fr        #
+#    Updated: 2026/06/03 18:11:31 by dkhmaruk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,12 @@ SRC = ft_bzero.c \
 	ft_printf_fd.c \
 	ft_strncmp.c \
 	print_op.c \
+	print_bench.c \
 	main.c \
 	manipulation.c \
 	small_sort.c \
-	simple_sort.c
+	simple_sort.c \
+	check_flag.c
 
 OBJ_DIR = obj
 

@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 11:44:22 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/02 18:19:56 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/03 18:17:59 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	main(int argc, char *argv[])
 {
 	t_list	*a;
 	t_list	*b;
-	t_list	*tmp;
 	char	**split;
 	int		i;
 	int		size;
@@ -106,15 +105,10 @@ int	main(int argc, char *argv[])
 
 	a = NULL;
 	b = NULL;
-	tmp = a;
+	ft_bzero(&stats, sizeof(t_stats));
+	check_flag(&argc, &argv, &stats);
 	if (argc == 1 || (argc == 2 && argv[1][0] == '\0'))
 		return (0);
-	if (!ft_strncmp(argv[1], "--bench", 8))
-	{
-		stats.bench = 1;
-		argv++;
-		argc--;
-	}
 	i = 1;
 	while (i < argc)
 	{
@@ -131,45 +125,17 @@ int	main(int argc, char *argv[])
 	}
 	if (check_for_dup(&a) == 0)
 		return (free_and_print_error(&a));
-//	if (!a){
-//		printf("NULL\n"); 
-//		return (0);
-//	}
-	ft_bzero(&stats, sizeof(t_stats));
-	tmp = a;
-	printf("//////////////////\n");
-	while (tmp)
-	{
-		printf("stack a befor push: %d\n", tmp->value);
-		printf("index befor sort: %d\n\n", tmp->index);	
-		tmp = tmp->next;
-	}
-	printf("//////////////////\n");
 	size = ft_lstsize(a);
 	set_index(&a);
-	insertion_sort(&a, &b, size, &stats);
-	printf("t_oper : %d\n", stats.total);
-	printf("//////////////////\n");
-	tmp = a;
-	while (tmp)
-	{
-		printf("stack a: %d\n", tmp->value);
-		printf("index after sort: %d\n\n", tmp->index);	
-		tmp = tmp->next;
-	}
-	printf("//////////////////\n");
-	tmp = b;
-	while (tmp)
-	{
-		printf("stack b: %d\n", tmp->value);
-		printf("index after sort: %d\n\n", tmp->index);	
-		tmp = tmp->next;
-	}
-	printf("//////////////////\n");
-
+	if (stats.simple_alg == 1)
+		insertion_sort(&a, &b, size, &stats);
+	else
+		return (free_and_print_error(&a));
+	if (stats.bench == 1)
+		print_bench(&stats);
 	ft_clean_all(&a);
 	ft_clean_all(&b);
-	if (!a && !b)
-		printf("after final free: NULL\n");
+//	if (!a && !b)
+//		printf("after final free: NULL\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 11:39:59 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/02 18:16:07 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/03 18:10:48 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,17 @@ typedef struct s_stats
 	int	rrr;
 	int	total;
 	int	bench;
+	int	simple_alg;
+	int	medium_alg;
+	int	complex_alg;
+	int	adaptive_alg;
 }			t_stats;
 
 int		ft_printf_fd(int fd, const char *fmt, ...);
 void	print_op(char *op, t_stats *stats);
+void	print_bench(t_stats *stats);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	check_flag(int *argc, char ***argv, t_stats *stats);
 
 void	ft_bzero(void *s, size_t n);
 char	**ft_split(char const *s, char c);
