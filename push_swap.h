@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 11:39:59 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/03 18:10:48 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/04 11:27:32 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,29 @@ typedef struct s_list
 
 typedef struct s_stats
 {
-	int	sa;
-	int	sb;
-	int	ss;
-	int	pa;
-	int	pb;
-	int	ra;
-	int	rb;
-	int	rr;
-	int	rra;
-	int	rrb;
-	int	rrr;
-	int	total;
-	int	bench;
-	int	simple_alg;
-	int	medium_alg;
-	int	complex_alg;
-	int	adaptive_alg;
+	int		sa;
+	int		sb;
+	int		ss;
+	int		pa;
+	int		pb;
+	int		ra;
+	int		rb;
+	int		rr;
+	int		rra;
+	int		rrb;
+	int		rrr;
+	int		total;
+	int		bench;
+	int		simple_alg;
+	int		medium_alg;
+	int		complex_alg;
+	int		adaptive_alg;
+	double	disorder;
 }			t_stats;
 
 int		ft_printf_fd(int fd, const char *fmt, ...);
 void	print_op(char *op, t_stats *stats);
-void	print_bench(t_stats *stats);
+void	print_bench(t_stats *stats, char *disorder_alg);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	check_flag(int *argc, char ***argv, t_stats *stats);
 

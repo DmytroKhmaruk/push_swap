@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 10:38:08 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/02 13:48:58 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/04 11:31:36 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	insertion_sort(t_list **a, t_list **b, int size, t_stats *stats)
 		}
 		sort_three(a, stats);
 	while (index--)
-	pa(b,a, stats);
+		pa(b,a, stats);
 	}
 	else if (size == 3)
  		sort_three(a, stats);
-	else if (size == 2)
+	else if (size == 2 && (*a)->index != index)
 		sa(a, stats);
 }

@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42vienna.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 15:29:51 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/02 15:49:13 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/04 12:32:24 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	print_str(int fd, char *str, int *count)
 	}
 	return (*count);
 }
+
+
 
 int	print_digit(int fd, unsigned long nbr, int base, char *hex, int *count)
 {
@@ -70,12 +72,38 @@ int	check_digit(int fd, long nbr, int base, int *count)
 	return (*count);
 }
 
+int	print_double(int fd, double nbr, int *count)
+{
+	long	whole;
+	double	frac;
+	int		i;
+
+	whole = (long)nbr;
+	frac = nbr - whole;
+	if (check_digit(fd, whole, 10, count) == -1)
+		return (-1);
+	if (print_char(fd, '.', count) == -1)
+		return (-1);
+	i = 0;
+	while(i < 2)
+	{
+	frac *= 10;
+	if (print_char(fd, (int)frac + '0', count) == -1)
+		return (-1);
+	frac -= (int)frac;
+	i++;
+	}
+	return (*count);
+}
+
 int	print_fmt(int fd, char specifier, va_list ap, int *count)
 {
 	if (specifier == 'c')
 		return (print_char(fd, va_arg(ap, int), count));
 	if (specifier == 's')
 		return (print_str(fd, va_arg(ap, char *), count));
+	if (specifier == 'f')
+		return (print_double(fd, (va_arg(ap, double)), count));
 	if (specifier == 'd' || specifier == 'i')
 		return (check_digit(fd, (long)(va_arg(ap, int)), 10, count));
 	else

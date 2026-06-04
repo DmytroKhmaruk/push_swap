@@ -6,7 +6,7 @@
 /*   By: dkhmaruk <dkhmaruk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 11:44:22 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/03 18:17:59 by dkhmaruk         ###   ########.fr       */
+/*   Updated: 2026/06/04 15:49:32 by dkhmaruk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,33 @@ int	free_and_print_error(t_list **a)
 	return (1);
 }
 
+double compute_disorder(t_list *a)
+{
+	t_list	*current;
+	t_list	*tmp;
+	int		total_pairs;
+	int		mistakes;
+
+	current = a;
+	total_pairs = 0;
+	mistakes = 0;
+	while (current)
+	{	
+		tmp	= current->next;
+		while(tmp)
+		{
+			total_pairs++;
+			if (current->value > tmp->value)
+				mistakes++;
+			tmp = tmp->next;
+		}
+		current = current->next;
+	}
+	if (total_pairs == 0)
+		return (0.0);
+	return ((double)mistakes / total_pairs);
+}
+#include <stdio.h>
 int	main(int argc, char *argv[])
 {
 	t_list	*a;
@@ -125,14 +152,21 @@ int	main(int argc, char *argv[])
 	}
 	if (check_for_dup(&a) == 0)
 		return (free_and_print_error(&a));
+	stats.disorder = compute_disorder(a);
 	size = ft_lstsize(a);
 	set_index(&a);
-	if (stats.simple_alg == 1)
+	if (stats.simple_alg == 1 || stats.disorder < 0.20)
 		insertion_sort(&a, &b, size, &stats);
-	else
-		return (free_and_print_error(&a));
-	if (stats.bench == 1)
-		print_bench(&stats);
+	else if (stats.medium_alg == 1 || stats.disorder < 0.50)
+		insertion_sort(&a, &b, size, &stats);
+	else if (stats.complex_alg == 1 || stats.disorder >= 0.50)
+		insertion_sort(&a, &b, size, &stats);
+	if (stats.bench == 1 && stats.disorder < 0.20)
+		print_bench(&stats, "O(n2)");
+	else if (stats.bench == 1 && stats.disorder < 0.50)
+		print_bench(&stats, "O(n√n)");
+	else if (stats.bench == 1 && stats.disorder >= 0.50)
+		print_bench(&stats, "O(n log n)");
 	ft_clean_all(&a);
 	ft_clean_all(&b);
 //	if (!a && !b)
