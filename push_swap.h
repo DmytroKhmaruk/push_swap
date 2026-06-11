@@ -3,26 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkhmaruk <dkhmaruk@student.42vienna.com>   +#+  +:+       +#+        */
+/*   By: zorwa <zorwa@student.42vienna.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/25 11:39:59 by dkhmaruk          #+#    #+#             */
-/*   Updated: 2026/06/04 11:27:32 by dkhmaruk         ###   ########.fr       */
+/*   Created: 2026/06/07 09:14:54 by zorwa             #+#    #+#             */
+/*   Updated: 2026/06/07 13:05:28 by zorwa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stddef.h>
-# include <stdarg.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include "libft/libft.h"
 
-typedef struct s_list
+typedef struct s_parsed
+{
+	int	*values;
+	int	size;
+}	t_parsed;
+
+typedef struct s_stack
 {
 	int				value;
 	int				index;
-	struct s_list	*prev;
-	struct s_list	*next;
-}				t_list;
+	struct s_stack	*prev;
+	struct s_stack	*next;
+}	t_stack;
 
 typedef struct s_stats
 {
@@ -39,44 +46,56 @@ typedef struct s_stats
 	int		rrr;
 	int		total;
 	int		bench;
-	int		simple_alg;
-	int		medium_alg;
-	int		complex_alg;
-	int		adaptive_alg;
+	int		strategy;
 	double	disorder;
-}			t_stats;
+}	t_stats;
 
-int		ft_printf_fd(int fd, const char *fmt, ...);
-void	print_op(char *op, t_stats *stats);
-void	print_bench(t_stats *stats, char *disorder_alg);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	check_flag(int *argc, char ***argv, t_stats *stats);
+# define STRATEGY_ADAPTIVE 0
+# define STRATEGY_SIMPLE 1
+# define STRATEGY_MEDIUM 2
+# define STRATEGY_COMPLEX 3
 
-void	ft_bzero(void *s, size_t n);
-char	**ft_split(char const *s, char c);
-int		ft_atoi(const char *nptr);
-void	ft_clean_all(t_list **list);
-int		check_str(char *argv[]);
-t_list	*ft_lstlast(t_list *lst);
-int		ft_lstsize(t_list *lst);
-int		ft_lstadd_back(t_list **list, char *argv[]);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-t_list	*lstnew(int value, t_list *prev);
+int			write_error(void);
+void		free_str_array(char **array);
+void		free_parsed(t_parsed *parsed);
 
-void	pa(t_list **b, t_list **a, t_stats *stats);
-void	pb(t_list **a, t_list **b, t_stats *stats);
-void	sa(t_list **a, t_stats *stats);
-void	sb(t_list **b, t_stats *stats);
-void	ss(t_list	**a, t_list	**b, t_stats *stats);
-void	ra(t_list **a, t_stats *stats);
-void	rb(t_list **b, t_stats *stats);
-void	rr(t_list **a, t_list **b, t_stats *stats);
-void	rra(t_list **a, t_stats *stats);
-void	rrb(t_list **b, t_stats *stats);
-void	rrr(t_list **a, t_list **b, t_stats *stats);
+char		**split_by_whitespace(const char *s);
+int			is_valid_input(int argc, char **argv, int start);
+t_parsed	parse_arguments(int argc, char **argv, int start);
+int			parse_options(int argc, char **argv, t_stats *stats);
+void		init_stats(t_stats *stats);
 
-void	set_index(t_list **a);
-void	sort_three(t_list **stack, t_stats *stats);
-void	small_sort(t_list **a, t_list **b, int size, t_stats *stats);
-void	insertion_sort(t_list **a, t_list **b, int size, t_stats *stats);
+t_stack		*stack_new(int value);
+int			stack_add_back(t_stack **stack, int value);
+void		stack_clear(t_stack **stack);
+t_stack		*stack_last(t_stack *stack);
+int			stack_size(t_stack *stack);
+int			get_position(t_stack *stack, int index);
+int			stack_is_sorted(t_stack *stack);
+t_stack		*build_stack(t_parsed parsed);
+
+void		set_index(t_stack *a);
+double		compute_disorder(t_stack *a);
+
+void		print_op(char *op, t_stats *stats);
+void		print_bench(t_stats *stats);
+
+void		sa(t_stack **a, t_stats *stats);
+void		sb(t_stack **b, t_stats *stats);
+void		ss(t_stack **a, t_stack **b, t_stats *stats);
+void		pa(t_stack **b, t_stack **a, t_stats *stats);
+void		pb(t_stack **a, t_stack **b, t_stats *stats);
+void		ra(t_stack **a, t_stats *stats);
+void		rb(t_stack **b, t_stats *stats);
+void		rr(t_stack **a, t_stack **b, t_stats *stats);
+void		rra(t_stack **a, t_stats *stats);
+void		rrb(t_stack **b, t_stats *stats);
+void		rrr(t_stack **a, t_stack **b, t_stats *stats);
+
+void		sort_three(t_stack **a, t_stats *stats);
+void		small_sort(t_stack **a, t_stack **b, int size, t_stats *stats);
+void		insertion_sort(t_stack **a, t_stack **b, int size, t_stats *stats);
+void		medium_sort(t_stack **a, t_stack **b, int size, t_stats *stats);
+void		radix_sort(t_stack **a, t_stack **b, int size, t_stats *stats);
+
 #endif
